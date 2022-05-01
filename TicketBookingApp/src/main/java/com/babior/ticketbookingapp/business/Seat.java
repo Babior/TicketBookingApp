@@ -17,6 +17,6 @@ import javax.persistence.Table;
 public class Seat {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private int row;
 }

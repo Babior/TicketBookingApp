@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,16 +16,10 @@ import java.util.Objects;
 public class Room {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String name;
-    @OneToMany
+    @ManyToMany
     private List<Seat> seats;
-
-//    public Room() {
-//        this.id = -1;
-//        this.name = "";
-//        this.seats = new ArrayList<>();
-//    }
 
     @Override
     public boolean equals(Object o) {

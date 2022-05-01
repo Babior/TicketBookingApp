@@ -18,28 +18,21 @@ import java.util.Objects;
 public class Movie {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String title;
-    private String genre;
-    private int length;
+    private int runningTime;
 
-    public Movie(String title) {
+    public Movie(String title, int runningTime) {
         this.title = title;
+        this.runningTime = runningTime;
     }
-
-    //    public Movie() {
-//        this.id = -1;
-//        this.title = "";
-//        this.genre = "";
-//        this.length = -1;
-//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Movie blogEntry = (Movie) o;
-        return title.equals(blogEntry.title);
+        Movie movie = (Movie) o;
+        return runningTime == movie.runningTime && title.equals(movie.title);
     }
 
     @Override

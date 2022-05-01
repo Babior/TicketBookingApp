@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Screening {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     @ManyToOne
     private Movie movie;
     @ManyToOne

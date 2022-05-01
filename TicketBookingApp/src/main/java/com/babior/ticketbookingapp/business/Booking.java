@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -16,9 +17,11 @@ import java.util.Objects;
 public class Booking {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     @ManyToOne
     private Screening screening;
+    @ManyToMany
+    private List<Seat> seat;
     private String firstName;
     private String lastName;
     private TicketType ticketType;
