@@ -1,6 +1,6 @@
 package com.babior.ticketbookingapp.assembler;
 
-import com.babior.ticketbookingapp.business.Movie;
+import com.babior.ticketbookingapp.business.entity.Movie;
 import com.babior.ticketbookingapp.controller.MovieController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -13,7 +13,7 @@ public class MovieAssembler implements RepresentationModelAssembler<Movie, Entit
     @Override
     public EntityModel<Movie> toModel(Movie movie) {
         return EntityModel.of(movie,
-                linkTo(methodOn(MovieController.class).findMovieById(movie.getId())).withSelfRel(),
-                linkTo(methodOn(MovieController.class).findAllMovies()).withRel("movies"));
+                linkTo(methodOn(MovieController.class).getMovieById(movie.getId())).withSelfRel(),
+                linkTo(methodOn(MovieController.class).getAllMovies()).withRel("movies"));
     }
 }

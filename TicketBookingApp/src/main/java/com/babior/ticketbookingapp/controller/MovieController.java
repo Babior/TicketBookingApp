@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.babior.ticketbookingapp.assembler.MovieAssembler;
-import com.babior.ticketbookingapp.business.Movie;
-import com.babior.ticketbookingapp.business.Screening;
+import com.babior.ticketbookingapp.business.entity.Movie;
+import com.babior.ticketbookingapp.business.entity.Screening;
 import com.babior.ticketbookingapp.exception.notfound.MovieNotFoundException;
 import com.babior.ticketbookingapp.repository.MovieRepository;
 import com.babior.ticketbookingapp.repository.ScreeningRepository;
@@ -30,16 +30,16 @@ public class MovieController {
 
 
     @GetMapping("/movies")
-    public CollectionModel<EntityModel<Movie>> findAllMovies() {
+    public CollectionModel<EntityModel<Movie>> getAllMovies() {
         List<EntityModel<Movie>> movies = repository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(movies, linkTo(methodOn(MovieController.class).findAllMovies()).withSelfRel());
+        return CollectionModel.of(movies, linkTo(methodOn(MovieController.class).getAllMovies()).withSelfRel());
     }
 
     @GetMapping("/movies/{id}")
-    public EntityModel<Movie> findMovieById(@PathVariable Long id) {
+    public EntityModel<Movie> getMovieById(@PathVariable Long id) {
         Movie movie = repository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
         return assembler.toModel(movie);
     }

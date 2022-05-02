@@ -1,4 +1,4 @@
-package com.babior.ticketbookingapp.business;
+package com.babior.ticketbookingapp.business.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

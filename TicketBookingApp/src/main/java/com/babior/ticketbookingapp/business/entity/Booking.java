@@ -1,4 +1,4 @@
-package com.babior.ticketbookingapp.business;
+package com.babior.ticketbookingapp.business.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class Booking {
     @ManyToOne
     private Screening screening;
     @ManyToMany
-    private List<Seat> seat;
+    private List<Seat> seats;
     private String firstName;
     private String lastName;
     private TicketType ticketType;

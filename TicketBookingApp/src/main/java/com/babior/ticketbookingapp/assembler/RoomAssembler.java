@@ -1,6 +1,6 @@
 package com.babior.ticketbookingapp.assembler;
 
-import com.babior.ticketbookingapp.business.Room;
+import com.babior.ticketbookingapp.business.entity.Room;
 import com.babior.ticketbookingapp.controller.RoomController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;

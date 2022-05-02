@@ -1,7 +1,8 @@
 package com.babior.ticketbookingapp.assembler;
 
-import com.babior.ticketbookingapp.business.Screening;
+import com.babior.ticketbookingapp.business.entity.Screening;
 import com.babior.ticketbookingapp.controller.MovieController;
+import com.babior.ticketbookingapp.controller.RoomController;
 import com.babior.ticketbookingapp.controller.ScreeningController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -15,7 +16,9 @@ public class ScreeningAssembler implements RepresentationModelAssembler<Screenin
     @Override
     public EntityModel<Screening> toModel(Screening screening) {
         return EntityModel.of(screening,
-                linkTo(methodOn(ScreeningController.class).findMScreeningById(screening.getId())).withSelfRel(),
-                linkTo(methodOn(ScreeningController.class).findAllScreenings()).withRel("screening"));
+                linkTo(methodOn(ScreeningController.class).getScreeningById(screening.getId())).withSelfRel(),
+                linkTo(methodOn(ScreeningController.class).getAllScreenings()).withRel("screenings"),
+                linkTo(methodOn(MovieController.class).getMovieById(screening.getMovie().getId())).withRel("movie"),
+                linkTo(methodOn(RoomController.class).findRoomById(screening.getRoom().getId())).withRel("room"));
     }
 }
