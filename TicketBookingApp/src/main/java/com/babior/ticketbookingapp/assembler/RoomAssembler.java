@@ -14,7 +14,8 @@ public class RoomAssembler implements RepresentationModelAssembler<Room, EntityM
     @Override
     public EntityModel<Room> toModel(Room room) {
         return EntityModel.of(room,
-                linkTo(methodOn(RoomController.class).findRoomById(room.getId())).withSelfRel(),
-                linkTo(methodOn(RoomController.class).findAllRooms()).withRel("room"));
+                linkTo(methodOn(RoomController.class).getRoomById(room.getId())).withSelfRel(),
+                linkTo(methodOn(RoomController.class).getAllRooms()).withRel("room"));
+        //link to the seats that are assigned to this room
     }
 }

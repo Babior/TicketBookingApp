@@ -1,6 +1,7 @@
 package com.babior.ticketbookingapp.business.entity;
 
 import com.babior.ticketbookingapp.business.view.ScreeningView;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -31,9 +32,9 @@ public class Screening {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Screening screening = (Screening) o;
-        return id != null && Objects.equals(id, screening.id);
+        return movie.equals(screening.movie) && room.equals(screening.room) && startDate.equals(screening.startDate);
     }
 
     @Override

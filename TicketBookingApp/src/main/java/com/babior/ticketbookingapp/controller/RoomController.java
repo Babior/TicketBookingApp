@@ -28,27 +28,19 @@ public class RoomController {
     private RoomAssembler assembler;
 
     @GetMapping("/rooms")
-    public CollectionModel<EntityModel<Room>> findAllRooms() {
+    public CollectionModel<EntityModel<Room>> getAllRooms() {
         List<EntityModel<Room>> rooms = repository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(rooms, linkTo(methodOn(RoomController.class).findAllRooms()).withSelfRel());
+        return CollectionModel.of(rooms, linkTo(methodOn(RoomController.class).getAllRooms()).withSelfRel());
     }
 
     @GetMapping("/rooms/{id}")
-    public EntityModel<Room> findRoomById(@PathVariable Long id) {
+    public EntityModel<Room> getRoomById(@PathVariable Long id) {
         Room room = repository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
         return assembler.toModel(room);
     }
-
-//    @PostMapping("/rooms")
-//    public ResponseEntity<?> addRoom(@RequestBody Room newRoom) {
-//        EntityModel<Room> entityModel = assembler.toModel(repository.save(newRoom));
-//        return ResponseEntity
-//                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-//                .body(entityModel);
-//    }
 
     @DeleteMapping("/rooms/{id}")
     public ResponseEntity<?> deleteRoom(@PathVariable Long id) {

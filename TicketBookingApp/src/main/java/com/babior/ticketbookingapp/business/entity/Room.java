@@ -18,7 +18,7 @@ public class Room {
     @GeneratedValue
     private Long id;
     private String name;
-    @ManyToMany
+    @OneToMany
     private List<Seat> seats;
 
     @Override
