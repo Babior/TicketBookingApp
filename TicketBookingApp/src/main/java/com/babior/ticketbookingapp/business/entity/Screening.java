@@ -1,6 +1,5 @@
 package com.babior.ticketbookingapp.business.entity;
 
-import com.babior.ticketbookingapp.business.view.ScreeningView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
@@ -13,6 +12,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode(of = {"movie", "room", "startDate"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -22,23 +22,8 @@ public class Screening {
     @GeneratedValue
     private Long id;
     @ManyToOne
-    @JsonView(ScreeningView.ResponseView.class)
     private Movie movie;
     @ManyToOne
     private Room room;
-    @JsonView(ScreeningView.ResponseView.class)
     private LocalDateTime startDate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Screening screening = (Screening) o;
-        return movie.equals(screening.movie) && room.equals(screening.room) && startDate.equals(screening.startDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

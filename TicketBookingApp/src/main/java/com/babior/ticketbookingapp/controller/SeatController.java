@@ -2,7 +2,7 @@ package com.babior.ticketbookingapp.controller;
 
 import com.babior.ticketbookingapp.assembler.SeatAssembler;
 import com.babior.ticketbookingapp.business.entity.Seat;
-import com.babior.ticketbookingapp.exception.notfound.SeatNotFoundException;
+import com.babior.ticketbookingapp.exception.EntityNotFoundException;
 import com.babior.ticketbookingapp.repository.SeatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -35,7 +35,7 @@ public class SeatController {
 
     @GetMapping("/seats/{id}")
     public EntityModel<Seat> getSeatById(@PathVariable Long id) {
-        Seat seat = repository.findById(id).orElseThrow(() -> new SeatNotFoundException(id));
+        Seat seat = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(Seat.class.getSimpleName(), id));
         return assembler.toModel(seat);
     }
 }

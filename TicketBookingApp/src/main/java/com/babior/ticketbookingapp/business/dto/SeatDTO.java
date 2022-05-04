@@ -8,16 +8,12 @@ import org.springframework.hateoas.server.core.Relation;
 
 @Builder
 @Getter
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Relation(itemRelation = "seat", collectionRelation = "seats")
 public class SeatDTO {
+    private final Long seatId;
     private final Long seatNumber;
     private final Long seatRow;
     private final Long roomId;
-
-    public SeatDTO(Long seatNumber, Long seatRow, Long roomId) {
-        this.seatNumber = seatNumber;
-        this.seatRow = seatRow;
-        this.roomId = roomId;
-    }
 }

@@ -1,16 +1,16 @@
 package com.babior.ticketbookingapp.business.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(of = {"title", "runningTime"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,18 +25,5 @@ public class Movie {
     public Movie(String title, int runningTime) {
         this.title = title;
         this.runningTime = runningTime;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movie movie = (Movie) o;
-        return runningTime == movie.runningTime && title.equals(movie.title);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title);
     }
 }

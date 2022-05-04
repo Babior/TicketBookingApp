@@ -17,6 +17,8 @@ public class BookingDTO {
     @Min(3)
     private String lastName;
     @NotNull
-    private List<Integer> seats;
+    private List<Long> seats;
+    @NotNull
+    private TicketType ticketType;
 
 }

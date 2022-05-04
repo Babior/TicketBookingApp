@@ -1,14 +1,15 @@
 package com.babior.ticketbookingapp.business.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(of = {"name", "seats"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -18,19 +19,7 @@ public class Room {
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
     private List<Seat> seats;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Room room = (Room) o;
-        return name.equals(room.name) && seats.equals(room.seats);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
 }

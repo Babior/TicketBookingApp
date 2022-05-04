@@ -1,14 +1,12 @@
 package com.babior.ticketbookingapp.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.babior.ticketbookingapp.assembler.MovieAssembler;
 import com.babior.ticketbookingapp.business.entity.Movie;
-import com.babior.ticketbookingapp.business.entity.Screening;
-import com.babior.ticketbookingapp.exception.notfound.MovieNotFoundException;
 import com.babior.ticketbookingapp.repository.MovieRepository;
 import com.babior.ticketbookingapp.repository.ScreeningRepository;
+import com.babior.ticketbookingapp.service.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -23,30 +21,23 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @AllArgsConstructor
 public class MovieController {
 
-    private MovieRepository repository;
-    private ScreeningRepository screeningRepository;
-    private MovieAssembler assembler;
-    private ScreeningController screeningController;
-
+    private MovieService service;
 
     @GetMapping("/movies")
-    public CollectionModel<EntityModel<Movie>> getAllMovies() {
-        List<EntityModel<Movie>> movies = repository.findAll().stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-
-        return CollectionModel.of(movies, linkTo(methodOn(MovieController.class).getAllMovies()).withSelfRel());
+    public ResponseEntity<?> getAllMovies() {
+        List<EntityModel<Movie>> movies = service.findAllMovies();
+        return ResponseEntity.ok(
+                CollectionModel.of(movies, linkTo(methodOn(MovieController.class).getAllMovies()).withSelfRel()));
     }
 
     @GetMapping("/movies/{id}")
-    public EntityModel<Movie> getMovieById(@PathVariable Long id) {
-        Movie movie = repository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
-        return assembler.toModel(movie);
+    public ResponseEntity<?> getMovieById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findMovieById(id));
     }
 
     @PostMapping("/movies")
     public ResponseEntity<?> addMovie(@RequestBody Movie newMovie) {
-        EntityModel<Movie> entityModel = assembler.toModel(repository.save(newMovie));
+        EntityModel<Movie> entityModel = service.createMovie(newMovie);
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
@@ -54,30 +45,15 @@ public class MovieController {
 
     @PutMapping("/movies/{id}")
     public ResponseEntity<?> saveOrUpdateMovie(@RequestBody Movie newMovie, @PathVariable Long id) {
-        Movie updatedMovie = repository.findById(id)
-                .map(movie -> {
-                    movie.setTitle(newMovie.getTitle());
-                    movie.setRunningTime(newMovie.getRunningTime());
-                    return repository.save(movie);
-                }).orElseGet(() -> {
-                    newMovie.setId(id);
-                    return repository.save(newMovie);
-                });
-        EntityModel<Movie> entityModel = assembler.toModel(updatedMovie);
+        EntityModel<Movie> updatedMovie = service.updateMovie(newMovie, id);
         return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
+                .created(updatedMovie.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(updatedMovie);
     }
 
     @DeleteMapping("/movies/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Long id) {
-        return repository.findById(id).map(movie -> {
-            List<Screening> screenings = screeningRepository.findScreeningsByMovie(movie);
-            for(Screening s : screenings){
-                screeningController.deleteScreening(s.getId());
-            }
-            repository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }).orElseThrow(() -> new MovieNotFoundException(id));
+        service.deleteMovie(id);
+        return ResponseEntity.noContent().build();
     }
 }
