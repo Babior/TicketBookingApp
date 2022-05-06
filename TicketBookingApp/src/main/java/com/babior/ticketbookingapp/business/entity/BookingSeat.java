@@ -9,22 +9,23 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode(of ={"booking", "seat"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table
 public class BookingSeat {
     @Id
-    Long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "booking_id")
-    Booking booking;
+    private Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "seat_id")
-    Seat seat;
+    private Seat seat;
 
-    TicketType ticketType;
+    private TicketType ticketType;
 
 }

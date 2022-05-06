@@ -9,6 +9,7 @@ import com.babior.ticketbookingapp.repository.SeatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -20,6 +21,8 @@ public class SeatService {
     private final SeatRepository repository;
     private final SeatAssembler assembler;
 
+    @NotNull
+    @Transactional(readOnly = true)
     public List<EntityModel<Seat>> findAvailableSeatsByScreening(@NotNull Long screeningId) {
         List<Seat> seats = repository.findAvailableSeatsByScreening(screeningId);
         return seats.stream()

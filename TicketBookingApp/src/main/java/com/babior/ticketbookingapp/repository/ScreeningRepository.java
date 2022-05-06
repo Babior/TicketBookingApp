@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Tuple;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -33,4 +34,6 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
                     "WHERE bs.seats_id IS NULL AND sc.id = :screeningId",
             nativeQuery = true)
     List<Tuple> findAvailableSeats(@Param("screeningId") Long screeningId);
+
+    List<Screening> deleteByIdIn(Collection<Long> ids);
 }

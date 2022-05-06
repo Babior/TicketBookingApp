@@ -33,7 +33,6 @@ public class Booking {
     private List<BookingSeat> seats;
     private String firstName;
     private String lastName;
-    private TicketType ticketType;
     private LocalDateTime expiryDate;
     private Double totalPrice = 0.0;
 }

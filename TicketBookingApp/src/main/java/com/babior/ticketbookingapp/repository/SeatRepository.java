@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 
@@ -21,5 +22,5 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             "where sc.id = :screeningId and bs.seat_id IS NULL;", nativeQuery = true)
     List<Seat> findAvailableSeatsByScreening(@NotNull Long screeningId);
 
-    List<Seat> findAllById(@NotNull List<Long> ids);
+    List<Seat> findAllByIdIn(Set<Long> seatIdList);
 }

@@ -5,10 +5,11 @@ import com.sun.istack.NotNull;
 import javax.validation.constraints.Min;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Data
-public class BookingDTO {
+public class BookingRequest {
     private Long screeningId;
     @NotNull
     @Min(3)
@@ -17,8 +18,5 @@ public class BookingDTO {
     @Min(3)
     private String lastName;
     @NotNull
-    private List<Long> seats;
-    @NotNull
-    private TicketType ticketType;
-
+    private HashMap<Long, TicketType> seats;
 }

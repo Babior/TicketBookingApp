@@ -1,16 +1,13 @@
 package com.babior.ticketbookingapp.business.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum TicketType {
-    ADULT, STUDENT, CHILD;
+
+    ADULT(25.0), STUDENT(18.0), CHILD(12.5);
+
     private Double price;
-
-    static {
-        ADULT.price = 25.0;
-        STUDENT.price = 18.0;
-        CHILD.price = 12.5;
-    }
-
-    public Double getPrice(){
-        return this.price;
-    }
 }
