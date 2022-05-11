@@ -15,12 +15,4 @@ class TicketBookingAppApplicationTests {
     @Test
     void contextLoads() {
     }
-
-
-    @Test
-    public void testMovie() {
-
-        Movie e1 = new Movie();
-    }
-
 }
