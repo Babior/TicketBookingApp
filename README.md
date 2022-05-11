@@ -60,7 +60,7 @@ curl -X GET localhost:8080/screenings/after/2022-05-09T15:49:01.549
 The user chooses a particular screening.
 The system gives information regarding screening room and available seats.
 ```bash
-curl -X GET localhost:8080/screenings/18/seats
+curl -X GET localhost:8080/screenings/3/seats
 ```
 
 **3. Make a booking for chosen seats** <br/>
@@ -68,21 +68,13 @@ The user chooses seats, and gives the name of the person doing the reservation
   (name and surname).The system gives back the total amount to pay and reservation expiration time.
 
 ```bash
-curl -X POST localhost:8080/screenings/18 -H 'Content-type:application/json' -d '
+curl -X POST localhost:8080/screenings/3 -H 'Content-type:application/json' -d '
 {
     "firstName":"Lizaveta", 
     "lastName":"Babior", 
     "seats": {
-        "1":"ADULT", 
-        "2":"CHILD"
+        "9":"ADULT", 
+        "10":"CHILD"
     }
 }'
-```
-
-Bash scripts to run endpoints:
-
-Step into project directory and run script with tests.
-```bash
-cd TicketBookingApp
-./test.sh
 ```

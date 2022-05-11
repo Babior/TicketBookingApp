@@ -142,8 +142,19 @@ public class BookingServiceImpl implements BookingService {
     public EntityModel<BookingRepresentation> saveOrUpdateBooking(BookingDTO newBooking, @NotNull Long id) {
         Screening screening = screeningRepository.findById(newBooking.getScreeningId())
                 .orElseThrow(() -> new EntityNotFoundException(Screening.class.getSimpleName(), newBooking.getScreeningId()));
+        if (hasIllegalName(newBooking)) {
+            throw new NotAllowedException("Illegal firstname/lastname");
+        }
+        if (hasEmptySeats(newBooking)) {
+            throw new NotAllowedException("Illegal seats array, should contain at least one seat");
+        }
+        if (!areSeatsAvailable(newBooking)) {
+            throw new NotAllowedException("Illegal seats, requested seats are not available");
+        }
         List<Seat> requestedSeats = seatRepository.findAllByIdIn(newBooking.getSeats().keySet());
-        double totalPrice = newBooking.getSeats().values().stream().mapToDouble(TicketType::getPrice).sum();
+        if (haveSeatInBetween(requestedSeats)) {
+            throw new NotAllowedException("Free seat left between booked seats");
+        }        double totalPrice = newBooking.getSeats().values().stream().mapToDouble(TicketType::getPrice).sum();
         Booking updatedBooking = bookingRepository.findById(id)
                 .map(booking -> {
                     booking.setFirstName(newBooking.getFirstName());
