@@ -1,12 +1,33 @@
 # TicketBookingApp
 
-## Setup
+## Setup for MacOS
 ### Global requirements
 * Installed Java and JDK
 * Installed Maven
 * Installed Git
+* Installed and running Docker
 
-### MacOS
+## Data
+### PostgreSQL on Docker
+#### Pull Docker image
+```bash
+sudo docker pull postgres
+```
+#### Create postgres container
+```bash
+sudo docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+```
+#### Run the container
+```bash
+sudo docker exec -it postgres psql -U postgres
+```
+#### Create database with name "multiplex"
+```bash
+CREATE DATABASE multiplex;
+exit
+```
+
+## Application
 Clone repository
 ```bash
 git clone https://github.com/Babior/TicketBookingApp.git
@@ -15,28 +36,14 @@ Open project folder
 ```bash
 cd TicketBookingApp
 ```
-Run application server
+Build and run application
 ```bash
-mvn spring-boot:run 
+sudo sh ./buildAndRun.sh
 ```
-
-
-## Data
-### PostgreSQL
-Create postgres container
+Run endpoints
 ```bash
-docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+sudo sh ./test.sh
 ```
-Run it
-```bash
-docker exec -it app-postgres psql -U postgres
-```
-Create database "multiplex"
-```bash
-CREATE DATABASE multiplex;
-```
-
-### MySQL
 
 ## Demo
 
@@ -61,8 +68,8 @@ The user chooses seats, and gives the name of the person doing the reservation
   (name and surname).The system gives back the total amount to pay and reservation expiration time.
 
 ```bash
-curl -X POST localhost:8080/screenings/18 -H 'Content-type:application/json' -d 
-'{
+curl -X POST localhost:8080/screenings/18 -H 'Content-type:application/json' -d '
+{
     "firstName":"Lizaveta", 
     "lastName":"Babior", 
     "seats": {
@@ -74,7 +81,7 @@ curl -X POST localhost:8080/screenings/18 -H 'Content-type:application/json' -d
 
 Bash scripts to run endpoints:
 
-Step into project directory and <code>test_cases</code> folder.
+Step into project directory and run script with tests.
 ```bash
 cd TicketBookingApp
 ./test.sh

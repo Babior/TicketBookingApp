@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Data
-public class BookingRequest {
+public class BookingDTO {
     private Long screeningId;
     @NotNull
     @Min(3)

@@ -1,33 +1,27 @@
 package com.babior.ticketbookingapp.service;
 
-import com.babior.ticketbookingapp.assembler.SeatAssembler;
-import com.babior.ticketbookingapp.business.dto.RoomRepresentation;
-import com.babior.ticketbookingapp.business.entity.Room;
+import com.babior.ticketbookingapp.business.dto.SeatDTO;
 import com.babior.ticketbookingapp.business.entity.Seat;
-import com.babior.ticketbookingapp.repository.RoomRepository;
-import com.babior.ticketbookingapp.repository.SeatRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-@AllArgsConstructor
-public class SeatService {
-    private final SeatRepository repository;
-    private final SeatAssembler assembler;
+public interface SeatService {
+    @NotNull
+    CollectionModel<EntityModel<SeatDTO>> findAllSeats();
 
     @NotNull
-    @Transactional(readOnly = true)
-    public List<EntityModel<Seat>> findAvailableSeatsByScreening(@NotNull Long screeningId) {
-        List<Seat> seats = repository.findAvailableSeatsByScreening(screeningId);
-        return seats.stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-    }
+    EntityModel<SeatDTO> findSeatById(@NotNull Long id);
 
+    @NotNull
+    CollectionModel<EntityModel<SeatDTO>> findAvailableSeatsByScreening(@NotNull Long screeningId);
+
+    @NotNull
+    EntityModel<SeatDTO> createSeat(SeatDTO newSeat);
+
+    @NotNull
+    EntityModel<SeatDTO> saveOrUpdateSeat(SeatDTO newSeat, @NotNull Long id);
+
+    void deleteSeat(@NotNull Long id);
 }

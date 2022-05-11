@@ -1,10 +1,8 @@
 package com.babior.ticketbookingapp.assembler;
 
-import com.babior.ticketbookingapp.business.dto.ScreeningRepresentation;
+import com.babior.ticketbookingapp.business.dto.MovieDTO;
 import com.babior.ticketbookingapp.business.entity.Movie;
-import com.babior.ticketbookingapp.business.entity.Screening;
 import com.babior.ticketbookingapp.controller.MovieController;
-import com.babior.ticketbookingapp.controller.ScreeningController;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -13,17 +11,21 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
-public class MovieAssembler implements RepresentationModelAssembler<Movie, EntityModel<Movie>> {
+public class MovieAssembler implements RepresentationModelAssembler<Movie, EntityModel<MovieDTO>> {
     @Override
-    public EntityModel<Movie> toModel(Movie movie) {
-        return EntityModel.of(movie,
-                linkTo(methodOn(MovieController.class).getMovieById(movie.getId())).withSelfRel(),
-                linkTo(methodOn(MovieController.class).getAllMovies()).withRel("movies"));
+    public EntityModel<MovieDTO> toModel(Movie movie) {
+        MovieDTO movieDTO = MovieDTO.builder()
+                .title(movie.getTitle())
+                .runningTime(movie.getRunningTime())
+                .build();
+
+        return EntityModel.of(movieDTO,
+                linkTo(methodOn(MovieController.class).getMovieById(movie.getId())).withSelfRel());
     }
 
     @Override
-    public CollectionModel<EntityModel<Movie>> toCollectionModel(Iterable<? extends Movie> entities) {
-        CollectionModel<EntityModel<Movie>> moviesCollection = RepresentationModelAssembler.super.toCollectionModel(entities);
+    public CollectionModel<EntityModel<MovieDTO>> toCollectionModel(Iterable<? extends Movie> entities) {
+        CollectionModel<EntityModel<MovieDTO>> moviesCollection = RepresentationModelAssembler.super.toCollectionModel(entities);
         moviesCollection.add(linkTo(methodOn(MovieController.class).getAllMovies()).withSelfRel());
         return moviesCollection;
     }

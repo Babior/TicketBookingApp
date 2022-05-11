@@ -15,4 +15,11 @@ public class ExceptionAdvice {
         return ex.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(NotAllowedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String notAllowedHandler(NotAllowedException ex) {
+        return ex.getMessage();
+    }
+
 }

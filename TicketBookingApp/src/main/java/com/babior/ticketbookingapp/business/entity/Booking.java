@@ -4,8 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 @Builder
 @Getter
@@ -18,19 +18,20 @@ import java.util.Objects;
 @Table
 public class Booking {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "booking_sequence", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "booking_sequence", sequenceName = "booking_sequence", allocationSize = 1)
     private Long id;
     @ManyToOne
     private Screening screening;
-//    @ManyToMany
-//    @JoinTable(
-//            name = "booking_seats",
-//            joinColumns = @JoinColumn(name = "booking_id"),
-//            inverseJoinColumns = @JoinColumn(name = "seat_id"))
-//    @ToString.Exclude
-//    private List<Seat> seats;
-    @OneToMany(mappedBy = "seat")
-    private List<BookingSeat> seats;
+    @ElementCollection
+    @Column(name = "ticket_type", nullable = false)
+    @JoinTable(
+            name = "booking_seat",
+            joinColumns = @JoinColumn(name = "booking_id")
+    )
+    @MapKeyJoinColumn(name = "seat_id")
+    @Enumerated(EnumType.STRING)
+    private Map<Seat, TicketType> seats = new HashMap<>();
     private String firstName;
     private String lastName;
     private LocalDateTime expiryDate;

@@ -1,14 +1,11 @@
 package com.babior.ticketbookingapp.business.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
+@Builder
 @Getter
 @Setter
 @ToString
@@ -19,7 +16,8 @@ import java.util.Objects;
 @Table
 public class Screening {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "screening_sequence", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "screening_sequence", sequenceName = "screening_sequence", allocationSize = 1)
     private Long id;
     @ManyToOne
     private Movie movie;

@@ -1,18 +1,18 @@
 package com.babior.ticketbookingapp.controller;
 
-import com.babior.ticketbookingapp.assembler.SeatAssembler;
+import com.babior.ticketbookingapp.business.dto.ScreeningRepresentation;
+import com.babior.ticketbookingapp.business.dto.SeatDTO;
 import com.babior.ticketbookingapp.business.entity.Seat;
-import com.babior.ticketbookingapp.exception.EntityNotFoundException;
-import com.babior.ticketbookingapp.repository.SeatRepository;
+import com.babior.ticketbookingapp.service.SeatService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -21,21 +21,38 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class SeatController {
 
-    private final SeatRepository repository;
-    private final SeatAssembler assembler;
+    private final SeatService seatService;
 
     @GetMapping("/seats")
-    public CollectionModel<EntityModel<Seat>> getAllSeats() {
-        List<EntityModel<Seat>> seats = repository.findAll().stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-
-        return CollectionModel.of(seats, linkTo(methodOn(SeatController.class).getAllSeats()).withSelfRel());
+    public ResponseEntity<?> getAllSeats() {
+        CollectionModel<EntityModel<SeatDTO>> seats = seatService.findAllSeats();
+        return ResponseEntity.ok(seats);
     }
 
     @GetMapping("/seats/{id}")
-    public EntityModel<Seat> getSeatById(@PathVariable Long id) {
-        Seat seat = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(Seat.class.getSimpleName(), id));
-        return assembler.toModel(seat);
+    public ResponseEntity<?> getSeatById(@PathVariable @NotNull Long id) {
+        return ResponseEntity.ok(seatService.findSeatById(id));
+    }
+
+    @PostMapping("/seats")
+    public ResponseEntity<?> addSeat(@RequestBody SeatDTO newSeat) {
+        EntityModel<SeatDTO> entityModel = seatService.createSeat(newSeat);
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+    }
+
+    @PutMapping("/seats/{id}")
+    public ResponseEntity<?> updateSeat(@RequestBody SeatDTO newSeat, @PathVariable @NotNull Long id) {
+        EntityModel<SeatDTO> updatedSeat = seatService.saveOrUpdateSeat(newSeat, id);
+        return ResponseEntity
+                .created(updatedSeat.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(updatedSeat);
+    }
+
+    @DeleteMapping("/seats/{id}")
+    public ResponseEntity<?> deleteSeat(@PathVariable @NotNull Long id) {
+        seatService.deleteSeat(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted");
     }
 }

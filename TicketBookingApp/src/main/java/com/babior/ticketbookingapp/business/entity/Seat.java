@@ -3,8 +3,8 @@ package com.babior.ticketbookingapp.business.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
+@Builder
 @Getter
 @Setter
 @ToString
@@ -15,9 +15,9 @@ import java.util.Objects;
 @Table
 public class Seat {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "seat_sequence", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seat_sequence", sequenceName = "seat_sequence", allocationSize = 1)
     private Long id;
     private Long number;
     private Long row;
-
 }

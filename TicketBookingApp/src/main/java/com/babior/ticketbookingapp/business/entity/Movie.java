@@ -2,11 +2,9 @@ package com.babior.ticketbookingapp.business.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@Builder
 @Getter
 @Setter
 @ToString
@@ -17,7 +15,8 @@ import javax.persistence.Table;
 @Table
 public class Movie {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "movie_sequence", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "movie_sequence", sequenceName = "movie_sequence", allocationSize = 1)
     private Long id;
     private String title;
     private int runningTime;

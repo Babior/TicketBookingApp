@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Builder
 @Getter
 @Setter
 @ToString
@@ -16,7 +17,8 @@ import java.util.Objects;
 @Table
 public class Room {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "room_sequence", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "room_sequence", sequenceName = "room_sequence", allocationSize = 1)
     private Long id;
     private String name;
     @OneToMany(fetch = FetchType.EAGER)

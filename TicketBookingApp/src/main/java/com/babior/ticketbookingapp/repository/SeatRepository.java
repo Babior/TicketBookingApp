@@ -22,5 +22,5 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             "where sc.id = :screeningId and bs.seat_id IS NULL;", nativeQuery = true)
     List<Seat> findAvailableSeatsByScreening(@NotNull Long screeningId);
 
-    List<Seat> findAllByIdIn(Set<Long> seatIdList);
+    List<Seat> findAllByIdIn(@NotNull Set<Long> seatIdList);
 }
