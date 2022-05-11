@@ -1,6 +1,7 @@
 # TicketBookingApp
+Seat reservation system for a multiplex.
 
-## Setup for MacOS
+## Setup
 ### Global requirements
 * Installed Java and JDK
 * Installed Maven
@@ -77,4 +78,9 @@ curl -X POST localhost:8080/screenings/3 -H 'Content-type:application/json' -d '
         "10":"CHILD"
     }
 }'
+```
+
+**To see all available endpoints go to the Postman Collection**
+```
+https://www.postman.com/liza-babior/workspace/my-workspace/collection/20162247-ca99861c-1f61-47ee-9b47-3f6ad9fc6426?action=share&creator=20162247
 ```
